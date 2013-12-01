@@ -4,7 +4,7 @@ I started experimenting with procedural terrain generation.
 
 The code generates an infinite terrain with period 256 based on 256
 random numbers. This is efficiently extended to two dimensions via
-a permutation table.
+a permutation lookup.
 
 See http://scratchapixel.com/lessons/3d-advanced-lessons/noise-part-1/
 for a simple introduction.
