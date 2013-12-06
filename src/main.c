@@ -143,40 +143,32 @@ void keyup (unsigned char key, int x, int y) {
 }
 
 void vertex (float x, float y) {
-  float z = h (x, y), g = z/4;
+  float z = h (x, y), g = z / (1 << NLAYER - 1);
   g = g*g*g*g;
   glColor3f (g, g, g);
   glVertex3f (x, y, z);
 }
 
 void display (void) {
-  int i, j, prec = 10, r = prec/2;
+  int i, j, u, v, prec = 8, r = 8;
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
   glBegin (GL_TRIANGLES);
-    for (i = 0; i < prec*prec; ++i) {
-      for (j = 0; j < prec*prec; ++j) {
-        float
-          Ox = 0, 
-          Oy = 0,
-          x = Ox - r + (float)i/prec,
-          xx = Ox - r + (float)(i+1)/prec,
-          y = Oy - r + (float)j/prec,
-          yy = Oy - r + (float)(j+1)/prec;
-        vertex (x, y);
-        vertex (xx, y);
-        vertex (xx, yy);
-        vertex (xx, yy);
-        vertex (x, yy);
-        vertex (x, y);
-        /*
-        vertex ((float)i/prec, (float)j/prec);
-        vertex ((float)(i+1)/prec, (float)j/prec);
-        vertex ((float)(i+1)/prec, (float)(j+1)/prec);
-        vertex ((float)(i+1)/prec, (float)(j+1)/prec);
-        vertex ((float)i/prec, (float)(j+1)/prec);
-        vertex ((float)i/prec, (float)j/prec);
-        */
+    for (i = -r; i < r; ++i) {
+      for (j = -r; j < r; ++j) {
+        for (u = 0; u < prec; ++u) {
+          for (v = 0; v < prec; ++v) {
+            float
+              x = i + (float)u/prec, xx = i + (float)(u+1)/prec,
+              y = j + (float)v/prec, yy = j + (float)(v+1)/prec;
+            vertex (x, y);
+            vertex (xx, y);
+            vertex (xx, yy);
+            vertex (xx, yy);
+            vertex (x, yy);
+            vertex (x, y);
+          }
+        }
       }
     }
   glEnd ();
